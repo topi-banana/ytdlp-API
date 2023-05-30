@@ -4,7 +4,30 @@
 
 必要なパラメーターは、URLとDLTypeだけです
 
-## Parameter
+## Installation & Run
+
+```sh
+$ git clone https://github.com/topi-banana/ytdlp-API
+$ cd ytdlp-API
+```
+### Docker (recommend)
+run
+```sh
+$ docker compose up
+```
+### Local
+install
+```sh
+$ pip install -r requirements.txt
+# or
+$ pip install yt-dlp fastapi uvicorn[standard]
+```
+run
+```sh
+$ python main.py
+```
+## Document
+### Parameter
 
 * `URL`: `str`
 
@@ -31,7 +54,7 @@ http://youtu.be/xxxxxxxx
 Downloadを要求したときに帰ってくるIDで、そのプロセスを見るときだけ必要です
 
 
-## ENV
+### ENV
 
 * `YTDLPAPI_KEEP_TIME`
 

@@ -12,6 +12,7 @@ RUN cd /;\
   tar -xf ffmpeg-release-amd64-static.tar.xz;\
   rm -rf ffmpeg-release-amd64-static.tar.xz;\
   export PATH=/ffmpeg-4.2.3-amd64-static:$PATH;
+
 EXPOSE 80
 
 ENV YTDLPAPI_MAX_PROC=1
