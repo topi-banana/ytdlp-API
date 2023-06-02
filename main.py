@@ -40,7 +40,11 @@ def info(url:str):
   try:
     with yt_dlp.YoutubeDL({}) as ydl:
       dic = ydl.extract_info(url, download=False)
-    del dic['formats'], dic['thumbnails'], dic['_format_sort_fields'], dic['requested_formats'], dic['subtitles'], dic['automatic_captions']
+      if 'formats'              in dic: del dic['formats']
+      if 'subtitles'            in dic: del dic['subtitles']
+      if 'thumbnails'           in dic: del dic['thumbnails']
+      if '_format_sort_fields'  in dic: del dic['_format_sort_fields']
+      if 'automatic_captions'   in dic: del dic['automatic_captions']
   except yt_dlp.utils.DownloadError as e:
     return {'status':'error', 'detail': e}
   return {'status':'success', 'content':dic}
