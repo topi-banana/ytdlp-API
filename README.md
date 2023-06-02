@@ -11,7 +11,23 @@ $ git clone https://github.com/topi-banana/ytdlp-API
 $ cd ytdlp-API
 ```
 ### Docker (recommend)
-run
+```
+$ docker build . -t ytdlp-api
+```
+#### docker run
+```sh
+$ docker run ytdlp-api
+```
+Optional
+```sh
+$ docker run \
+  -e YTDLPAPI_MAX_PROC=10 \
+  -e YTDLPAPI_KEEP_TIME=25 \
+  -p 8080:80 \
+  -v tmp:/tmp \
+  ytdlp-api
+```
+#### docker compose
 ```sh
 $ docker compose up
 ```
@@ -76,7 +92,7 @@ default : **/tmp**
 
 * `YTDLPAPI_PORT`
 
-default : **80**
+default : **10487**
 
 APIの公開ポート
 
@@ -85,3 +101,38 @@ APIの公開ポート
 default : **0.0.0.0**
 
 APIの公開IP
+
+# CLI client
+
+`requests.get` と `rich` を使ってAPIアクセスを少し簡単にしただけのクソ雑クライアント
+
+引数パーサーには`click`を使用
+
+（今後修正予定）
+## How to use
+```sh
+$ python client.py --help
+```
+```
+Usage: client.py [OPTIONS]
+
+Options:
+  -u, --url TEXT          URL
+  -p, --proccess-id TEXT  プロセスID
+  -h, --host TEXT         APIのホスト  [default: 127.0.0.1:10487]
+  -a, --audio             ダウンロードタイプをaudioに変更する
+  -i, --info              動画の情報の表示
+  --help                  Show this message and exit.
+```
+
+# Change log
+
+* 0.1.0 (2023/6/2)
+  
+  [CLI クライアント(クソ雑)]()
+
+  デフォルトポートの変更 80 -> 10487
+
+* 0.0.1 (2023/5/31)
+  
+  [API部分の完成](https://github.com/topi-banana/ytdlp-API/commit/34ed8c54a19b9db5e19b64426d7924e56be783c2)

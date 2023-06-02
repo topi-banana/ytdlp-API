@@ -1,12 +1,12 @@
 version: '3'
 services:
   app:
-    build: .
+    image: ytdlp-api
     environment:
       - YTDLPAPI_MAX_PROC=10
       - YTDLPAPI_KEEP_TIME=25
     ports:
-      - "8080:80"
+      - "10487:10487"
     volumes:
       - tmp:/tmp
 volumes:
