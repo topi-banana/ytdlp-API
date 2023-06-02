@@ -4,3 +4,4 @@ env
 Dockerfile
 .git
 .gitignore
+client.py

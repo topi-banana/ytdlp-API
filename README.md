@@ -129,7 +129,7 @@ Options:
 
 * 0.1.0 (2023/6/2)
   
-  [CLI クライアント(クソ雑)]()
+  [CLI クライアント(クソ雑)](https://github.com/topi-banana/ytdlp-API/commit/1ea137d9ff3e0c01a8cff70eb5c59ff23bdb177f)
 
   デフォルトポートの変更 80 -> 10487
 
