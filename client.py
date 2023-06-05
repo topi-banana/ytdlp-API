@@ -4,6 +4,7 @@ import click
 from rich import print
 
 from requests import get as request
+from requests.exceptions import ConnectionError
 
 class URL(str):
   def __init__(self, txt:str):
@@ -19,27 +20,31 @@ class URL(str):
 @click.option('-i', '--info', help='動画の情報の表示', is_flag=True)
 @click.option('--dev', is_flag=True)
 def main(url:str, proccess_id:str, host:str='127.0.0.1:10487', audio:bool=False, info:bool=False, dev:bool=False):
-  if dev:
-    print(url)
-    print(proccess_id)
-    print(host)
-    print(audio)
-    print(info)
-  if info:
-    if not url:
-      url = input('URL : ')
-    res = request(f"http://{host}/info", params={
-      'url': url,
-    })
-  elif proccess_id:
-    res = request(f"http://{host}/proccess/{proccess_id}")
-  else:
-    if not url:
-      url = input('URL : ')
-    res = request(f"http://{host}/dl/{'audio' if audio else 'video'}", params={
-      'url': url,
-    })
-  print(res.json())
+  try:
+    if dev:
+      print(url)
+      print(proccess_id)
+      print(host)
+      print(audio)
+      print(info)
+    if info:
+      if not url:
+        url = input('URL : ')
+      res = request(f"http://{host}/info", params={
+        'url': url,
+      })
+    elif proccess_id:
+      res = request(f"http://{host}/proccess/{proccess_id}")
+    else:
+      if not url:
+        url = input('URL : ')
+      res = request(f"http://{host}/dl/{'audio' if audio else 'video'}", params={
+        'url': url,
+      })
+    print(res.json())
+  except ConnectionError as e:
+    print(f'[red]ConnectionError[/red]: {host}')
+    #print(e)
 
 #request(args.url)
 

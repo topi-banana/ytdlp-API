@@ -19,7 +19,7 @@ with open('Description.md','r') as f:
 app = FastAPI(
   title='yt-dlp API',
   description=description,
-  version='0.0.1',
+  version='0.1.2',
   terms_of_service='https://api.topi.cf/terms/',
   contact={
     'name': 'とぴ。',
@@ -28,12 +28,9 @@ app = FastAPI(
   }
 )
 
-maxProc = int(os.environ['YTDLPAPI_MAX_PROC'])
-tmpDir = os.environ['YTDLPAPI_TMP_DIR']
-
 procs = dict()
 
-app.mount('/files', StaticFiles(directory=tmpDir), name='static')
+app.mount('/files', StaticFiles(directory=os.getenv('YTDLPAPI_TMP_DIR', './tmp/')), name='static')
 
 @app.get('/info')
 def info(url:str):
@@ -58,7 +55,7 @@ def download(url:str, dltype:Literal['video','audio']):
   if procs.get(dic['id']):
     # 既にプロセスが存在する
     return
-  if len(procs) >= maxProc:
+  if len(procs) >= int(os.getenv('YTDLPAPI_MAX_PROC', '1')):
     # プロセス枠がすべて埋まってる
     return
   # スレッドの定義
@@ -122,7 +119,7 @@ def main(url:str, dic:dict, dltype:Literal['video','audio'] = 'video'):
     'cachedir': False,
     'progress_hooks': [hook],
     'logger': Logger(),
-    'outtmpl': f'''{tmpDir}/{dic['id']}.%(ext)s''',
+    'outtmpl': f'''{os.getenv('YTDLPAPI_TMP_DIR', './tmp/')}/{dic['id']}.%(ext)s''',
     'ffmpeg_location': './ffmpeg'
   }
   with yt_dlp.YoutubeDL({**ydl_opts,**default}) as ydl:
@@ -130,16 +127,16 @@ def main(url:str, dic:dict, dltype:Literal['video','audio'] = 'video'):
   # プロセスを「完了」にする
   procs[dic['id']]['status'] = 'complete'
   # KEEP_TIME秒間プロセスの「完了」を示す状態を保持する
-  time.sleep(int(os.environ['YTDLPAPI_KEEP_TIME']))
+  time.sleep(int(os.getenv('YTDLPAPI_KEEP_TIME', '255')))
   # プロセスの削除
   del procs[dic['id']]
 
 
 def SIGINT_handler(signal, frame):
-  print(" SIGINT ")
+  print(' SIGINT ')
   sys.exit()
 
 signal.signal(signal.SIGINT, SIGINT_handler)
 
 if __name__ == '__main__':
-  uvicorn.run(app, host=os.environ['YTDLPAPI_HOST'], port=int(os.environ['YTDLPAPI_PORT']))
+  uvicorn.run(app, host=os.getenv('YTDLPAPI_HOST', '0.0.0.0'), port=int(os.getenv('YTDLPAPI_PORT', '10487')))

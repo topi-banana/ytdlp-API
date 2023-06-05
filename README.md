@@ -127,9 +127,17 @@ Options:
 
 # Change log
 
+* 0.1.2 (2023/6/5)
+  
+  [環境変数のデフォルト値を設定を設定 & クライアントの例外処理を追加]()
+  
+  環境変数のデフォルト値を設定
+
+  無効なホストの場合に`ConnectionError`が発生するように
+
 * 0.1.1 (2023/6/2)
 
-  [Youtube以外の動画URLにてKeyErrorが発生するのを修正]()
+  [Youtube以外の動画URLにてKeyErrorが発生するのを修正](https://github.com/topi-banana/ytdlp-API/commit/7d11348c1b38cbe17180409d408aa852f7767868)
 
 * 0.1.0 (2023/6/2)
   
