@@ -131,12 +131,5 @@ def main(url:str, dic:dict, dltype:Literal['video','audio'] = 'video'):
   # プロセスの削除
   del procs[dic['id']]
 
-
-def SIGINT_handler(signal, frame):
-  print(' SIGINT ')
-  sys.exit()
-
-signal.signal(signal.SIGINT, SIGINT_handler)
-
 if __name__ == '__main__':
   uvicorn.run(app, host=os.getenv('YTDLPAPI_HOST', '0.0.0.0'), port=int(os.getenv('YTDLPAPI_PORT', '10487')))
